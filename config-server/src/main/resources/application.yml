@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          uri: file:///C:/Users/User/Documents/config-server-repo/
+          uri: https://github.com/shyambista123/config-server-repo
           timeout: 5
           skip-ssl-validation: true
 server:
