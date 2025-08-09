@@ -1,7 +1,10 @@
 package com.example.productservice.controller;
 
+import com.example.productservice.dto.ProductDto;
 import com.example.productservice.entity.Product;
+import com.example.productservice.mappers.ProductMapper;
 import com.example.productservice.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,23 +17,24 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> findAll() {
-        return productService.findAll();
+    public List<ProductDto> findAll() {
+        List<Product> products = productService.findAll();
+        return products.stream().map(ProductMapper::mapToDto).toList();
     }
 
     @PostMapping("/products")
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+    public ProductDto addProduct(@RequestBody @Valid ProductDto productDto) {
+        return productService.addProduct(productDto);
     }
 
     @GetMapping("/products/{id}")
-    public Product findById(@PathVariable Long id) {
+    public ProductDto findById(@PathVariable Long id) {
         return productService.findById(id);
     }
 
     @PutMapping("/products/{id}")
-    public  Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(product, id);
+    public  ProductDto updateProduct(@PathVariable Long id, @RequestBody @Valid ProductDto productDto) {
+        return productService.updateProduct(productDto, id);
     }
 
     @DeleteMapping("/products/{id}")

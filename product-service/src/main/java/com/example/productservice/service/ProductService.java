@@ -1,6 +1,9 @@
 package com.example.productservice.service;
 
+import com.example.productservice.dto.ProductDto;
 import com.example.productservice.entity.Product;
+import com.example.productservice.exception.ProductNotFoundException;
+import com.example.productservice.mappers.ProductMapper;
 import com.example.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,31 +24,36 @@ public class ProductService {
     }
 
     @CacheEvict(value = "product", allEntries = true)
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDto addProduct(ProductDto productDto) {
+        Product product = ProductMapper.mapToEntity(productDto);
+        productRepository.save(product);
+        return ProductMapper.mapToDto(product);
     }
 
     @Cacheable(value = "product", key = "#id")
-    public Product findById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("product not found"));
+    public ProductDto findById(Long id) {
+        Product product =  productRepository.findById(id)
+                .orElseThrow(()-> new ProductNotFoundException("Product with id " + id + " not found."));
+        return ProductMapper.mapToDto(product);
     }
 
     @CachePut(value = "product", key = "#id")
     @CacheEvict(value = "product", allEntries = true)
-    public Product updateProduct(Product product, Long id) {
+    public ProductDto updateProduct(ProductDto productDto, Long id) {
         Product existingProduct = productRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("product not found"));
-        existingProduct.setName(product.getName());
-        existingProduct.setDescription(product.getDescription());
-        existingProduct.setPrice(product.getPrice());
+                .orElseThrow(()-> new ProductNotFoundException("Product with id " + id + " not found."));
+
+        existingProduct.setName(productDto.getName());
+        existingProduct.setDescription(productDto.getDescription());
+        existingProduct.setPrice(productDto.getPrice());
         productRepository.save(existingProduct);
-        return existingProduct;
+        return ProductMapper.mapToDto(existingProduct);
     }
 
     @CacheEvict(value = "product", key = "#id", allEntries = true)
     public void deleteProduct(Long id) {
-        Product productDel = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
+        Product productDel = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id " + id + " not found."));
         productRepository.delete(productDel);
     }
 }
