@@ -2,7 +2,7 @@ package com.example.productservice.controller;
 
 import com.example.productservice.dto.ProductDto;
 import com.example.productservice.entity.Product;
-import com.example.productservice.mappers.ProductMapper;
+import com.example.productservice.mapper.ProductMapper;
 import com.example.productservice.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.productservice.mappers;
+package com.example.productservice.mapper;
 
 import com.example.productservice.dto.ProductDto;
 import com.example.productservice.entity.Product;

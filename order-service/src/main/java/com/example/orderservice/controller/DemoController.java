@@ -1,4 +1,4 @@
-package com.example.orderservice;
+package com.example.orderservice.controller;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.GetMapping;

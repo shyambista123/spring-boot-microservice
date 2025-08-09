@@ -3,7 +3,7 @@ package com.example.productservice.service.implementation;
 import com.example.productservice.dto.ProductDto;
 import com.example.productservice.entity.Product;
 import com.example.productservice.exception.ProductNotFoundException;
-import com.example.productservice.mappers.ProductMapper;
+import com.example.productservice.mapper.ProductMapper;
 import com.example.productservice.repository.ProductRepository;
 import com.example.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
